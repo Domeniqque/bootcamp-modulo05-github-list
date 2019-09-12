@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import api from '../../services/api';
-import { Loading, Owner, IssueList } from './styles';
+import { Loading, Owner, IssueList, Filter, FilterItem } from './styles';
 import Container from '../../components/Container';
 
 class Repository extends Component {
@@ -11,9 +11,19 @@ class Repository extends Component {
     repository: {},
     issues: [],
     loading: true,
+    selectedIssueState: 'closed',
+    issueStates: ['all', 'open', 'closed'],
   };
 
   async componentDidMount() {
+    await this.loadRepository();
+  }
+
+  handleFilterChange = async state => {
+    await this.loadRepository(state);
+  };
+
+  async loadRepository(state = 'closed') {
     const { match } = this.props;
 
     const repoName = decodeURIComponent(match.params.repository);
@@ -22,7 +32,7 @@ class Repository extends Component {
       api.get(`/repos/${repoName}`),
       api.get(`/repos/${repoName}/issues`, {
         params: {
-          state: 'open',
+          state,
           per_page: 5,
         },
       }),
@@ -32,11 +42,18 @@ class Repository extends Component {
       loading: false,
       repository: repository.data,
       issues: issues.data,
+      selectedIssueState: state,
     });
   }
 
   render() {
-    const { repository, issues, loading } = this.state;
+    const {
+      repository,
+      issues,
+      loading,
+      issueStates,
+      selectedIssueState,
+    } = this.state;
 
     if (loading) {
       return <Loading>Carregando</Loading>;
@@ -51,6 +68,18 @@ class Repository extends Component {
           <p>{repository.description}</p>
         </Owner>
 
+        <Filter>
+          <strong>Filtros</strong>
+          {issueStates.map(state => (
+            <FilterItem
+              key={state}
+              active={selectedIssueState === state}
+              onClick={() => this.handleFilterChange(state)}
+            >
+              {state}
+            </FilterItem>
+          ))}
+        </Filter>
         <IssueList>
           {issues.map(issue => (
             <li key={String(issue.id)}>

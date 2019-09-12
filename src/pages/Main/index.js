@@ -11,6 +11,7 @@ export default class Main extends Component {
     newRepo: '',
     repositories: [],
     loading: false,
+    error: '',
   };
 
   componentDidMount() {
@@ -37,26 +38,41 @@ export default class Main extends Component {
 
   handleSubmit = async e => {
     e.preventDefault();
+    try {
+      this.setState({ loading: true });
 
-    this.setState({ loading: true });
+      const { newRepo, repositories } = this.state;
 
-    const { newRepo, repositories } = this.state;
+      // Check dublicated repository
+      const hasDuplicated = repositories.filter(
+        r => r.name === newRepo.toLowerCase()
+      ).length;
 
-    const response = await api.get(`/repos/${newRepo}`);
+      if (hasDuplicated) throw new Error('Repositório duplicado!');
 
-    const data = {
-      name: response.data.full_name,
-    };
+      const response = await api.get(`/repos/${newRepo}`);
 
-    this.setState({
-      repositories: [...repositories, data],
-      newRepo: '',
-      loading: false,
-    });
+      const data = {
+        name: response.data.full_name.toLowerCase(),
+      };
+
+      this.setState({
+        repositories: [...repositories, data],
+        newRepo: '',
+        loading: false,
+      });
+    } catch (err) {
+      const error =
+        err.response && err.response.status === 404
+          ? 'Repositório não encontrado!'
+          : err.message;
+
+      this.setState({ error, loading: false });
+    }
   };
 
   render() {
-    const { newRepo, loading, repositories } = this.state;
+    const { newRepo, loading, repositories, error } = this.state;
 
     return (
       <Container>
@@ -65,14 +81,17 @@ export default class Main extends Component {
           Repositórios
         </h1>
 
-        <Form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            placeholder="Adicionar repositório"
-            value={newRepo}
-            onChange={this.handleInputChange}
-          />
+        <Form onSubmit={this.handleSubmit} invalid={!!error}>
+          <div>
+            <input
+              type="text"
+              placeholder="Adicionar repositório"
+              value={newRepo}
+              onChange={this.handleInputChange}
+            />
 
+            {error && <small>{error}</small>}
+          </div>
           <SubmitButton loading={loading}>
             {loading ? (
               <FaSpinner color="#fff" size={14} />

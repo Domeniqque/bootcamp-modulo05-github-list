@@ -50,6 +50,11 @@ export const IssueList = styled.ul`
     padding: 15px 10px;
     border: 1px solid #eee;
     border-radius: 4px;
+    transition: border 500ms;
+
+    &:hover {
+      border-left: 1px solid #7159c1;
+    }
 
     & + li {
       margin-top: 10px;
@@ -98,7 +103,7 @@ export const IssueList = styled.ul`
   }
 `;
 
-export const Filter = styled.div`
+export const Filter = styled.section`
   /* Cria linha separadora com bordas simetricas */
   padding-top: 30px;
   margin: 30px 0;
@@ -128,5 +133,41 @@ export const FilterItem = styled.button`
       background: #7159c1;
       font-weight: 600;
       color: #fff;
+    `}
+`;
+
+export const Paginate = styled.section`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0;
+`;
+
+export const BtnPaginate = styled.button.attrs(props => ({
+  type: 'button',
+  disabled: props.isDisabled,
+}))`
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin: 0 5px;
+  border: none;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  &[disabled] {
+    color: #999;
+    cursor: not-allowed;
+    border: none;
+  }
+
+  ${props =>
+    !props.isDisabled &&
+    css`
+      &:hover {
+        padding: 4px 9px;
+        border: 1px solid #7159c1;
+      }
     `}
 `;

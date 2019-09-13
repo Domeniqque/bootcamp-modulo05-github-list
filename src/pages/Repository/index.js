@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 
 import api from '../../services/api';
-import { Loading, Owner, IssueList, Filter, FilterItem } from './styles';
+import {
+  Loading,
+  Owner,
+  IssueList,
+  Filter,
+  FilterItem,
+  Paginate,
+  BtnPaginate,
+} from './styles';
 import Container from '../../components/Container';
 
 class Repository extends Component {
@@ -13,17 +22,40 @@ class Repository extends Component {
     loading: true,
     selectedIssueState: 'closed',
     issueStates: ['all', 'open', 'closed'],
+    page: 1,
   };
 
   async componentDidMount() {
-    await this.loadRepository();
+    await this.loadRepository({ state: 'closed', page: 1 });
   }
 
   handleFilterChange = async state => {
-    await this.loadRepository(state);
+    await this.loadRepository({ state, page: 1 });
   };
 
-  async loadRepository(state = 'closed') {
+  handlePrevPage = async () => {
+    const { page, state } = this.state;
+
+    if (page === 1) return;
+
+    await this.loadRepository({
+      page: page - 1,
+      state,
+    });
+  };
+
+  handleNextPage = async () => {
+    const { page, repository, state } = this.state;
+
+    if (repository.length === 0) return;
+
+    await this.loadRepository({
+      page: page + 1,
+      state,
+    });
+  };
+
+  async loadRepository({ state, page }) {
     const { match } = this.props;
 
     const repoName = decodeURIComponent(match.params.repository);
@@ -34,6 +66,7 @@ class Repository extends Component {
         params: {
           state,
           per_page: 5,
+          page,
         },
       }),
     ]);
@@ -43,6 +76,8 @@ class Repository extends Component {
       repository: repository.data,
       issues: issues.data,
       selectedIssueState: state,
+      state,
+      page,
     });
   }
 
@@ -53,6 +88,7 @@ class Repository extends Component {
       loading,
       issueStates,
       selectedIssueState,
+      page,
     } = this.state;
 
     if (loading) {
@@ -80,6 +116,7 @@ class Repository extends Component {
             </FilterItem>
           ))}
         </Filter>
+
         <IssueList>
           {issues.map(issue => (
             <li key={String(issue.id)}>
@@ -96,6 +133,19 @@ class Repository extends Component {
             </li>
           ))}
         </IssueList>
+
+        <Paginate>
+          <BtnPaginate onClick={this.handlePrevPage} isDisabled={page === 1}>
+            <FaAngleLeft width={14} /> <span>Anterior</span>
+          </BtnPaginate>
+
+          <BtnPaginate
+            onClick={this.handleNextPage}
+            isDisabled={issues.length === 0}
+          >
+            <span>Próximo</span> <FaAngleRight width={14} />
+          </BtnPaginate>
+        </Paginate>
       </Container>
     );
   }

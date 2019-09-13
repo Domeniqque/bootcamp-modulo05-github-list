@@ -85,7 +85,7 @@ export default class Main extends Component {
           <div>
             <input
               type="text"
-              placeholder="Adicionar repositório"
+              placeholder="Adicionar repositório. Ex: facebook/react"
               value={newRepo}
               onChange={this.handleInputChange}
             />

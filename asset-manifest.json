@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.js": "/bootcamp-github-repositories/static/js/main.23d3836d.chunk.js",
+    "main.js.map": "/bootcamp-github-repositories/static/js/main.23d3836d.chunk.js.map",
+    "runtime~main.js": "/bootcamp-github-repositories/static/js/runtime~main.4d0cb998.js",
+    "runtime~main.js.map": "/bootcamp-github-repositories/static/js/runtime~main.4d0cb998.js.map",
+    "static/js/2.247a2557.chunk.js": "/bootcamp-github-repositories/static/js/2.247a2557.chunk.js",
+    "static/js/2.247a2557.chunk.js.map": "/bootcamp-github-repositories/static/js/2.247a2557.chunk.js.map",
+    "index.html": "/bootcamp-github-repositories/index.html",
+    "precache-manifest.e47b83df9ebc2f4d1b15bc8b3d841d1c.js": "/bootcamp-github-repositories/precache-manifest.e47b83df9ebc2f4d1b15bc8b3d841d1c.js",
+    "service-worker.js": "/bootcamp-github-repositories/service-worker.js"
+  }
+}

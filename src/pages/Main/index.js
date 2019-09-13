@@ -60,6 +60,7 @@ export default class Main extends Component {
         repositories: [...repositories, data],
         newRepo: '',
         loading: false,
+        error: '',
       });
     } catch (err) {
       const error =

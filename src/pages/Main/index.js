@@ -33,7 +33,7 @@ export default class Main extends Component {
   }
 
   handleInputChange = e => {
-    this.setState({ newRepo: e.target.value });
+    this.setState({ newRepo: e.target.value, error: '' });
   };
 
   handleSubmit = async e => {
@@ -42,6 +42,8 @@ export default class Main extends Component {
       this.setState({ loading: true });
 
       const { newRepo, repositories } = this.state;
+
+      if (!newRepo) throw new Error('Digite um repositório!');
 
       // Check dublicated repository
       const hasDuplicated = repositories.filter(

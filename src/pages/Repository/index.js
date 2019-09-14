@@ -12,6 +12,7 @@ import {
   FilterItem,
   Paginate,
   BtnPaginate,
+  BtbExcluir,
 } from './styles';
 import Container from '../../components/Container';
 
@@ -23,6 +24,7 @@ class Repository extends Component {
     selectedIssueState: 'closed',
     issueStates: ['all', 'open', 'closed'],
     page: 1,
+    repoName: '',
   };
 
   async componentDidMount() {
@@ -55,6 +57,19 @@ class Repository extends Component {
     });
   };
 
+  deleteRepository = () => {
+    const { history } = this.props;
+    const { repoName } = this.state;
+
+    const repositories = JSON.parse(localStorage.getItem('repositories'));
+    console.log(repositories);
+    const repositoryFiltered = repositories.filter(r => r.name !== repoName);
+
+    localStorage.setItem('repositories', JSON.stringify(repositoryFiltered));
+
+    return history.push('/');
+  };
+
   async loadRepository({ state, page }) {
     const { match } = this.props;
 
@@ -78,6 +93,7 @@ class Repository extends Component {
       selectedIssueState: state,
       state,
       page,
+      repoName,
     });
   }
 
@@ -146,6 +162,8 @@ class Repository extends Component {
             <span>Próximo</span> <FaAngleRight width={14} />
           </BtnPaginate>
         </Paginate>
+
+        <BtbExcluir onClick={this.deleteRepository}>Excluir</BtbExcluir>
       </Container>
     );
   }
@@ -156,6 +174,9 @@ Repository.propTypes = {
     params: PropTypes.shape({
       repository: PropTypes.string,
     }),
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
   }).isRequired,
 };
 

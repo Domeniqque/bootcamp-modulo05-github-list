@@ -171,3 +171,18 @@ export const BtnPaginate = styled.button.attrs(props => ({
       }
     `}
 `;
+
+export const BtbExcluir = styled.a`
+  color: red;
+  display: block;
+  margin: 10px auto;
+  width: 62px;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 5px 10px;
+
+  &:hover {
+    padding: 4px 9px;
+    border: 1px solid red;
+  }
+`;

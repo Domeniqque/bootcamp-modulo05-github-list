@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d03443cf86903b7493458bdd873a0431",
+    "revision": "b47282c83721e9178aeaa82f0c7f90af",
     "url": "/bootcamp-github-repositories/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bootcamp-github-repositories/static/js/2.12523da7.chunk.js"
   },
   {
-    "revision": "03d1ce68cb4a6f010f55",
-    "url": "/bootcamp-github-repositories/static/js/main.cb70b866.chunk.js"
+    "revision": "018781b65782b8a649a0",
+    "url": "/bootcamp-github-repositories/static/js/main.f9fd44d2.chunk.js"
   },
   {
     "revision": "8a72a370dfe5e6b64a1f",
